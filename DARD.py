@@ -5,10 +5,13 @@ import json
 
 #=================================================================
 
-taget_dir = "/home/pi/Deviantart"							# Direction in witch files get saved
-feed_file = "/home/pi/rssDown/feedlist.txt"			# File witch contains feed-Urls
+taget_dir = "/home/user/DARD"			# Direction in witch files get saved
+feed_file = "feedlist.txt"				# File witch contains feed-Urls
+artist_name_file = "artistlist.txt"		# File witch contains Artistnames
 
 #=================================================================
+
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 def make_dir(sub_path):
 	if not os.path.exists(sub_path):
@@ -43,7 +46,16 @@ def read_feed_list(feed_list):
 	for i in lines:
 		get_feeds(i)
 
-read_feed_list(feed_file)
+def read_artist_feed_list(artist_feed_list):
+	f = open(artist_feed_list)
+	lines = f.readlines()
+	for i in lines:
+		get_feeds("http://backend.deviantart.com/rss.xml?q=gallery%3A" + i + "+sort%3Atime&type=deviation")
 
+
+
+read_feed_list(__location__ + "/" + feed_file)
+
+read_artist_feed_list(__location__ + "/" + artist_name_file)
 
 
